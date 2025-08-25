@@ -1,0 +1,33 @@
+services:
+  cards:
+    restart: always
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: cards_service
+    ports:
+      - "8080:8080"
+    networks:
+      - cards_network
+
+  cards_db:
+    image: postgres:17
+    container_name: cards_db
+    restart: always
+    environment:
+      POSTGRES_DB: cards
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: darkness
+    ports:
+      - "5433:5433"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - cards_network
+
+
+networks:
+  cards_network:
+
+volumes:
+  postgres_data:
