@@ -9,6 +9,9 @@ services:
       - "8080:8080"
     networks:
       - cards_network
+    depends_on:
+      cards_db:
+        condition: service_healthy
 
   cards_db:
     image: postgres:17
@@ -19,11 +22,15 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: darkness
     ports:
-      - "5433:5433"
+      - "5440:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - cards_network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d cards" ]
+      interval: 10s
+      retries: 5
 
 
 networks:

@@ -3,5 +3,5 @@ WORKDIR /app
 COPY pom.xml /app
 COPY src /app/src
 
-RUN mvn package
+RUN mvn package -DskipTests
 CMD ["java", "-jar", "target/cards-0.0.1-SNAPSHOT.jar"]
